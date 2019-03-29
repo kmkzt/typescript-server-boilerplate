@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   # db:
   #   image: mysql:8.0.15
@@ -10,17 +10,13 @@ services:
   #     MYSQL_PASSWORD: pass
   #     MYSQL_DATABASE: database
   db:
-    image: postgres:9.6-alpine
+    image: postgres:9.6-alpine # docs https://hub.docker.com/_/postgres
     ports:
       - 3306:3306
     volumes:
-      - database:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
       - ./db/postgres:/docker-entrypoint-initdb.d
-    environment:
-      - POSTGRES_ROOT_PASSWORD: root
-      - POSTGRES_USER: user
-      - POSTGRES_PASSWORD: pass
-      - POSTGRES_DB: database
+    env_file: ./development.env
 volumes:
   db:
     external: false

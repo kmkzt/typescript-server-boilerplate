@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import * as dotenv from 'dotenv'
 import { resolve } from 'path'
 
 const envfile = `${process.env.NODE_ENV}.env`
