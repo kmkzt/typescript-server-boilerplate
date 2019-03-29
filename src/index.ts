@@ -1,10 +1,13 @@
 import * as express from 'express'
+import * as bodyParser from 'body-parser'
 import { envload } from './utils/env'
 import api from './api'
 import { join } from 'path'
 
 envload()
 const app = express()
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 app.use('/api', api)
 
