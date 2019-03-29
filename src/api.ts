@@ -9,4 +9,8 @@ api.get('/users', async (req, res, next) => {
   res.send(param)
 })
 
+api.post('/users', async (req, res, next) => {
+  // console.log(res)
+  console.log(req.body)
+})
 export default api
