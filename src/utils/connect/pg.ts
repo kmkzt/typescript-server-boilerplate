@@ -1,34 +1,49 @@
-import { Pool, QueryArrayConfig } from 'pg'
-
+import * as pgPromise from 'pg-promise'
 const user = process.env.POSTGRES_USER || 'user'
-const host = '127.0.0.1'
+const host = 'localhost'
 const database = process.env.POSTGRES_DB || 'database'
 const password = process.env.POSTGRES_PASSWORD || 'pass'
-const port = 3306
+const port = 5555
 
 const connectPath = `postgres://${user}:${password}@${host}:${port}/${database}`
 
-const pool = new Pool({
-  connectionString: connectPath
-})
-export const query = (query: Partial<QueryArrayConfig>, value?: any[]) =>
-  pool.query(
-    {
-      rowMode: 'array',
-      ...query
-    } as QueryArrayConfig,
-    value
-  )
-
 // pg-promise
-// export const connectQuery = async () => {
+export const query = async (text: string, value?: any) => {
+  try {
+    console.log('connect:' + connectPath)
+    const db = pgPromise(/*options*/)(connectPath)
+    // const result = await db.query('SELECT $1:name FROM $2:name', ['*', 'users'])
+    const result = await db.query(text, value)
+    return result
+  } catch (err) {
+    console.log('ERROR:', err)
+    throw err
+  }
+}
+
+// node-postgres
+// import { Pool, QueryArrayConfig, QueryArrayResult } from 'pg'
+// export const query = async (
+//   query: Partial<QueryArrayConfig>,
+//   value?: any[]
+// ): Promise<any> => {
 //   try {
-//     console.log('connect:' + connectPath)
-//     const db = pgConnect(/*options*/)(connectPath)
-//     // const result = await db.query('SELECT $1:name FROM $2:name', ['*', 'users'])
-//     const result = await db.query('SELECT * FROM users')
-//     return result
+//     const pool = new Pool({
+//       connectionString: connectPath
+//     })
+//     // console.log(pool)
+//     const result: QueryArrayResult = await pool.query(
+//       {
+//         rowMode: 'array',
+//         ...query
+//       } as QueryArrayConfig,
+//       value
+//     )
+//     pool.end()
+//     console.log(result)
+//     return result.rows
 //   } catch (err) {
-//     console.log('ERROR:', err)
+//     // console.log(err)
+//     throw err
 //   }
 // }
