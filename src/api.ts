@@ -10,7 +10,25 @@ api.get('/users', async (req, res, next) => {
 })
 
 api.post('/users', async (req, res, next) => {
-  // console.log(res)
-  console.log(req.body)
+  try {
+    const data = {
+      id: Math.floor(Math.random() * 10000),
+      ...req.body
+    }
+    // await query(
+    //   "INSERT INTO users (id, username, email) VALUES (3, 'dammyname', 'email@email')"
+    // )
+    await query(
+      'INSERT INTO ${table:name} (${data:name}) VALUES (${data:csv})',
+      {
+        table: 'users',
+        data
+      }
+    )
+    res.send(`success add: ${JSON.stringify(data)}`)
+  } catch (err) {
+    // console.log(err)
+    res.redirect('/')
+  }
 })
 export default api

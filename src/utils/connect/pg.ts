@@ -8,11 +8,10 @@ const port = 5555
 const connectPath = `postgres://${user}:${password}@${host}:${port}/${database}`
 
 // pg-promise
+const db = pgPromise(/*options*/)(connectPath)
 export const query = async (text: string, value?: any) => {
   try {
-    console.log('connect:' + connectPath)
-    const db = pgPromise(/*options*/)(connectPath)
-    // const result = await db.query('SELECT $1:name FROM $2:name', ['*', 'users'])
+    // console.log('connect:' + connectPath)
     const result = await db.query(text, value)
     return result
   } catch (err) {
