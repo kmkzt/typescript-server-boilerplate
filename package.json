@@ -10,6 +10,7 @@
   "author": "kmkzt",
   "license": "MIT",
   "dependencies": {
+    "ajv": "6.10.0",
     "body-parser": "^1.18.3",
     "dotenv": "7.0.0",
     "express": "4.16.4",
@@ -17,6 +18,7 @@
     "pg-promise": "8.6.4"
   },
   "devDependencies": {
+    "@types/ajv": "1.0.0",
     "@types/body-parser": "^1.17.0",
     "@types/dotenv": "6.1.0",
     "@types/express": "4.16.1",
