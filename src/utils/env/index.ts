@@ -1,6 +1,9 @@
 import * as dotenv from 'dotenv'
 import { resolve } from 'path'
 
-const envfile = `${process.env.NODE_ENV}.env`
-console.log('load:' + envfile)
-dotenv.config({ path: resolve(__dirname, envfile) })
+export const envload = () => {
+  const envfile = `${process.env.NODE_ENV}.env`
+  const envpath = resolve(__dirname, '../../../', envfile)
+  console.log('load:' + envpath)
+  dotenv.config({ path: envpath })
+}
