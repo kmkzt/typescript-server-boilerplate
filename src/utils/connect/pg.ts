@@ -19,30 +19,3 @@ export const query = async (text: string, value?: any) => {
     throw err
   }
 }
-
-// node-postgres
-// import { Pool, QueryArrayConfig, QueryArrayResult } from 'pg'
-// export const query = async (
-//   query: Partial<QueryArrayConfig>,
-//   value?: any[]
-// ): Promise<any> => {
-//   try {
-//     const pool = new Pool({
-//       connectionString: connectPath
-//     })
-//     // console.log(pool)
-//     const result: QueryArrayResult = await pool.query(
-//       {
-//         rowMode: 'array',
-//         ...query
-//       } as QueryArrayConfig,
-//       value
-//     )
-//     pool.end()
-//     console.log(result)
-//     return result.rows
-//   } catch (err) {
-//     // console.log(err)
-//     throw err
-//   }
-// }
