@@ -5,13 +5,16 @@ const auth = express.Router()
 
 export const secret = 'secret'
 
-const authUser = async (email: string, password: string): Promise<string> => {
+const authUser = async (
+  email: string,
+  password: string
+): Promise<any | null> => {
   try {
-    const id = await query(
+    const res = await query(
       'SELECT id FROM ${table:name} WHERE email=${email:csv} AND password=${password:csv}',
       { table: 'auth', email, password }
     )
-    return id
+    return res && res.length > 0 ? res[0] : null
   } catch (err) {
     throw err
   }
@@ -30,12 +33,13 @@ auth.post('/token', async (req, res) => {
       res.send({ error: 'rquest errror' })
       return
     }
-    const userId = await authUser(email, password)
-    if (userId) {
-      const token = jwt.sign({ userId }, secret, { expiresIn: '25h' })
+    const userinfo = await authUser(email, password)
+    if (userinfo) {
+      const token = jwt.sign(userinfo, secret, { expiresIn: '25h' })
       req.session.token = token
       res.send({ token })
     } else {
+      req.session.token = null
       res.send({ error: 'Unable to authenticate!' })
     }
   } catch (err) {
@@ -49,8 +53,12 @@ auth.get('/logout', (req, res) => {
     res.send({ error: 'server error' })
     return
   }
-  req.session.token = null
-  res.send({ message: 'signout success.' })
+  if (req.session.token) {
+    req.session.token = null
+    res.send({ message: 'signout success.' })
+  } else {
+    res.send({ message: 'not logged in' })
+  }
 })
 
 auth.post('/register', async (req, res, next) => {
