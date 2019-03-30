@@ -1,8 +1,11 @@
+// import fs from 'fs'
 import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
 import { query } from './utils/connect/pg'
 const auth = express.Router()
 
+// TODO
+// export const secret = fs.readFileSync('public.pem');
 export const secret = 'secret'
 
 const authUser = async (

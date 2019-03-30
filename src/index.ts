@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 // express-session
 app.use(
   session({
-    secret, // cookie hash
+    secret: secret,
     resave: false,
     saveUninitialized: false,
     cookie: {
