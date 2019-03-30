@@ -41,7 +41,6 @@ user.get('/me', async (req, res) => {
         message: 'not found user info'
       })
     }
-    console.log(param)
     res.send(param)
   } catch (err) {
     res.send({ message: 'failed network error.' })
