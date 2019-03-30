@@ -1,15 +1,14 @@
 import * as express from 'express'
-import { query } from './utils/connect/pg'
+import { query } from '../utils/connect/pg'
+const user = express.Router()
 
-const api = express.Router()
-
-api.get('/users', async (req, res, next) => {
+user.get('/users', async (req, res, next) => {
   const param = await query('SELECT * FROM ${table:name}', { table: 'users' })
   res.header('Content-Type', 'application/json; charset=utf-8')
   res.send(param)
 })
 
-api.post('/users', async (req, res, next) => {
+user.post('/users', async (req, res, next) => {
   try {
     const data = {
       id: Math.floor(Math.random() * 10000),
@@ -31,4 +30,4 @@ api.post('/users', async (req, res, next) => {
     res.redirect('/')
   }
 })
-export default api
+export default user
