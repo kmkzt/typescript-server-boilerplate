@@ -6,6 +6,7 @@
 
 ```
 docker-compose up -d
+// [wip] need to create table 
 yarn dev
 ```
 

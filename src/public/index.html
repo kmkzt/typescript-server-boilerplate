@@ -13,11 +13,66 @@
       <input type="submit" value="submit">
     </form>
     <h1>login</h1>
-    <form method="POST" action="/auth/token" enctype="application/json" >
+    <form id="loginform" method="POST" action="/auth/token" enctype="application/json">
       <input type="email" name="email" placeholder="email">
       <input type="password" name="password" placeholder="password">
       <input type="submit" value="submit">
     </form>
-    <a href="/auth/logout">logout</a>
-  </bodi>
+    <button id="logout">logout</button>
+    <div id="profile"></div>
+    <script>
+      const profileLoad =  async () => {
+        try {
+          const res = await fetch('/api/me')
+          const user = await res.json()
+          document.getElementById('profile').innerHTML = `
+            <h2>my profile</h2>
+            <p>${JSON.stringify(user)}</p>
+          `
+        } catch (err) {
+          throw err
+        }
+      }
+      const logoutAction = async () => {
+        try {
+          await fetch('/auth/logout')
+          profileLoad()
+        } catch (err) {
+          throw err
+        }
+      }
+      const loginAction = async (e) => {
+        e.preventDefault()
+        try {
+          const formEle = e.target
+          const url = formEle.action
+          const enctype = formEle.enctype
+          const input = formEle.querySelectorAll('input')
+          
+          const formValue = Object.values(input).reduce((form, inp) => { 
+            if(!inp.name) return form
+            return  { ...form, [inp.name]: inp.value }
+          }, {})
+          console.log(url, formValue)
+          const {email, password} = formValue
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify({
+              email,
+              password
+            })
+          })
+          profileLoad()
+        } catch (err) {
+          throw err
+        }
+      }
+      window.addEventListener('DOMContentLoaded', profileLoad)
+      document.getElementById('logout').addEventListener('click', logoutAction)
+      document.getElementById('loginform').addEventListener('submit', loginAction)
+    </script>
+  </body>
 </html>
