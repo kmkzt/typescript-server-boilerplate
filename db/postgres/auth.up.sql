@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS auth (
   password VARCHAR(64)
 );
 
-INSERT INTO users (
+INSERT INTO auth (
   id,
   email,
   password
@@ -14,7 +14,7 @@ VALUES (
   'aaa@aaa.com',
   'aaa'
 );
-INSERT INTO users (
+INSERT INTO auth (
   id,
   email,
   password
