@@ -1,7 +1,6 @@
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import * as session from 'express-session'
-import * as jwt from 'jsonwebtoken'
 import { envload } from './utils/env'
 import api from './api'
 import auth, { secret } from './auth'
@@ -13,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // express-session
-auth.use(
+app.use(
   session({
     secret, // cookie hash
     resave: false,
@@ -30,20 +29,20 @@ app.use('/api', api)
 app.use('/auth', auth)
 
 // fallback -> root
-const root = join(__dirname, '../public')
+const root = join(__dirname, 'public')
 console.log(root)
 app.use(
   '*',
   express.static(root, {
     dotfiles: 'ignore',
     // etag: false,
-    // extensions: ['htm', 'html'],
-    // index: false,
+    extensions: ['htm', 'html'],
+    index: 'index.html'
     // maxAge: '1d',
     // redirect: false,
-    setHeaders: function(res, path, stat) {
-      res.set('x-timestamp', String(Date.now()))
-    }
+    // setHeaders: function(res, path, stat) {
+    //   res.set('x-timestamp', String(Date.now()))
+    // }
   })
 )
 
