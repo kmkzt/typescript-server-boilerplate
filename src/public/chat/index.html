@@ -3,7 +3,9 @@
     <title>CHAT SAMPLE</title>
   </head>
   <body>
+    <h1>Access User</h1>
     <div id="access"></div>
+    <h1>Message</h1>
     <div id="message"></div>
     <form id="form">
       <input id="userinput" placeholder="username" >
@@ -47,15 +49,18 @@
         e.preventDefault();
         const userEle = document.getElementById('userinput')
         if (userEle) {
-          setUser( userEle.value)
-          socketEmit('access', { access: userEle.value})
+          setUser(userEle.value)
+          socketEmit('access', { user: userEle.value })
           userEle.value = ''
           toggleForm()
           return
         }
         const messageEle = document.getElementById('messageinput') 
         if (messageEle) {
-          socketEmit('message', { message: messageEle.value})
+          socketEmit('message', { 
+            user: getUser(),
+            message: messageEle.value 
+          })
           messageEle.value = ''
         }
       })

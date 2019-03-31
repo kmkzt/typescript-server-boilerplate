@@ -36,15 +36,19 @@ app.use('/auth', auth)
 // WebSocket
 app.use('/chat', express.static(join(root, 'chat')))
 const server = http.createServer(app)
-const io = socket(server)
-io.of('/chat').on('connection', socket => {
+const io = socket(server).of('/chat')
+io.on('connection', socket => {
   socket.on('message', data => {
-    console.log(data)
-    io.emit('message', data)
+    io.emit('message', {
+      ...data,
+      createdAt: new Date().toDateString()
+    })
   })
   socket.on('access', data => {
-    console.log(data)
-    io.emit('access', data)
+    io.emit('access', {
+      ...data,
+      createdAt: new Date().toDateString()
+    })
   })
 })
 server.listen(3000)
