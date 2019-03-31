@@ -32,26 +32,7 @@ const root = join(__dirname, 'public')
 // routing
 app.use('/api', api)
 app.use('/auth', auth)
-
-// WebSocket
 app.use('/chat', express.static(join(root, 'chat')))
-const server = http.createServer(app)
-const io = socket(server).of('/chat')
-io.on('connection', socket => {
-  socket.on('message', data => {
-    io.emit('message', {
-      ...data,
-      createdAt: new Date().toDateString()
-    })
-  })
-  socket.on('access', data => {
-    io.emit('access', {
-      ...data,
-      createdAt: new Date().toDateString()
-    })
-  })
-})
-server.listen(3000)
 
 // fallback -> root
 app.use(
@@ -68,4 +49,26 @@ app.use(
   })
 )
 
-// app.listen(3000)
+// WebSocket
+const server = http.createServer(app)
+const io = socket(server)
+const chat = io.of('/chat')
+chat.on('connection', socket => {
+  socket.on('message', data => {
+    const room = data.room
+    socket.join(room)
+    chat.to(room).emit('message', {
+      ...data,
+      createdAt: new Date().toDateString()
+    })
+  })
+  socket.on('access', data => {
+    const room = data.room
+    socket.join(room)
+    chat.to(room).emit('access', {
+      ...data,
+      createdAt: new Date().toDateString()
+    })
+  })
+})
+server.listen(3000)

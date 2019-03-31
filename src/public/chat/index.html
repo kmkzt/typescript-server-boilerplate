@@ -8,9 +8,11 @@
     <h1>Message</h1>
     <div id="message"></div>
     <form id="form">
-      <input id="userinput" placeholder="username" >
+      <input id="room" type="number" placeholder="room number" >
+      <input class="userinput" placeholder="username" >
       <button>submit</button>      
     </form>
+    <div id="currentroom"></div>
     <button id="logout">logout</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
@@ -20,9 +22,12 @@
       const logout = document.getElementById('logout')
       const setUser = (user) => localStorage.setItem('user', user)
       const getUser = () => localStorage.getItem('user')
-      
-      const toggleForm = () => {
-        const input = document.querySelector('form > input')
+      const setRoom = (room) => localStorage.setItem('room', room)
+      const getRoom = () => localStorage.getItem('room')
+      const getRandomRoom = () => Math.floor(Math.random() * Math.floor(100))
+      // const getRandomRoom = () => 1
+      const checkStatus = () => {
+        const input = document.getElementsByClassName('userinput')[0]
         if (!getUser()) {
           input.setAttribute('id', 'userinput')
           input.setAttribute('placeholder', 'username')
@@ -30,6 +35,8 @@
           input.setAttribute('id', 'messageinput')
           input.setAttribute('placeholder', 'message')
         }
+        const currentroom = document.getElementById('currentroom')
+        currentroom.innerHTML = getRoom()
       }
       const socket = io('http://localhost:3000/chat');
       const socketEmit = (action, data) => socket.emit(action, data)
@@ -42,22 +49,28 @@
       socket.on('access', recieve(access))
       socket.on('message', recieve(message))
       window.addEventListener('DOMContentLoaded', () => {
-        toggleForm()
+        checkStatus()
       })
       form.addEventListener('submit', (e) => {
-        console.log(e)
         e.preventDefault();
         const userEle = document.getElementById('userinput')
         if (userEle) {
+          const selectRoom = document.getElementById('room').value
+          const room =  selectRoom ? Number(selectRoom) : getRandomRoom()
+          setRoom(room)
           setUser(userEle.value)
-          socketEmit('access', { user: userEle.value })
+          socketEmit('access', { 
+            room,
+            user: userEle.value 
+          })
           userEle.value = ''
-          toggleForm()
+          checkStatus()
           return
         }
         const messageEle = document.getElementById('messageinput') 
         if (messageEle) {
           socketEmit('message', { 
+            room: getRoom(),
             user: getUser(),
             message: messageEle.value 
           })
@@ -66,7 +79,8 @@
       })
       logout.addEventListener('click', () => {
         localStorage.removeItem('user')
-        toggleForm()
+        localStorage.removeItem('room')
+        checkStatus()
       })
     </script>
   </body>
