@@ -87,4 +87,21 @@ auth.post('/register', async (req, res, next) => {
   }
 })
 
+export const authRequired: express.RequestHandler = (req, res, next) => {
+  res.header('Content-Type', 'application/json; charset=utf-8')
+  if (!req.session) {
+    res.json({
+      message: 'server error.'
+    })
+    return
+  }
+  if (!req.session.token) {
+    res.json({
+      message: 'required authentication.'
+    })
+    return
+  }
+  next()
+}
+
 export default auth

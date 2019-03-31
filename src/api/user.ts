@@ -1,25 +1,13 @@
 import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
 import { query } from '../utils/connect/pg'
-import { secret } from '../auth'
+import { secret, authRequired } from '../auth'
 const user = express.Router()
 
-user.get('/me', async (req, res) => {
+user.get('/me', authRequired, async (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
-  if (!req.session) {
-    res.json({
-      message: 'server error.'
-    })
-    return
-  }
-  if (!req.session.token) {
-    res.json({
-      message: 'required authentication.'
-    })
-    return
-  }
   try {
-    const decode = jwt.verify(req.session.token, secret)
+    const decode = jwt.verify((req.session as any).token, secret)
     if (typeof decode === 'string') {
       res.json({
         message: 'server error.'
@@ -46,25 +34,14 @@ user.get('/me', async (req, res) => {
     res.send({ message: 'failed network error.' })
   }
 })
-user.get('/users', async (req, res, next) => {
+user.get('/users', authRequired, async (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
-  if (!req.session) {
-    res.json({
-      message: 'server error.'
-    })
-    return
-  }
-  if (!req.session.token) {
-    res.json({
-      message: 'required authentication.'
-    })
-    return
-  }
   const param = await query('SELECT * FROM ${table:name}', { table: 'users' })
   res.send(param)
 })
 
-user.post('/users', async (req, res, next) => {
+user.post('/users', authRequired, async (req, res, next) => {
+  res.header('Content-Type', 'application/json; charset=utf-8')
   try {
     const data = {
       id: Math.floor(Math.random() * 10000),
@@ -83,7 +60,7 @@ user.post('/users', async (req, res, next) => {
     res.send(`success add: ${JSON.stringify(data)}`)
   } catch (err) {
     // console.log(err)
-    res.redirect('/')
+    res.send({ message: 'failed network error.' })
   }
 })
 export default user
