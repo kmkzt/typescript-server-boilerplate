@@ -17,7 +17,8 @@
     "express-session": "1.15.6",
     "jsonwebtoken": "8.5.1",
     "mysql": "2.16.0",
-    "pg-promise": "8.6.4"
+    "pg-promise": "8.6.4",
+    "socket.io": "2.2.0"
   },
   "devDependencies": {
     "@types/ajv": "1.0.0",
@@ -28,6 +29,7 @@
     "@types/jsonwebtoken": "8.3.2",
     "@types/mysql": "2.15.5",
     "@types/pg-promise": "5.4.3",
+    "@types/socket.io": "2.1.2",
     "eslint": "5.15.3",
     "eslint-config-prettier": "4.1.0",
     "eslint-plugin-prettier": "3.0.1",

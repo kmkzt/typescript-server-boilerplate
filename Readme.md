@@ -18,6 +18,8 @@ yarn build
 ```
 
 ## feature
-- [ ] restfull api
+- [x] restfull api
 - [ ] graphql
-- [ ] jwt
+- [x] jwt
+- [ ] WebSocket
+
