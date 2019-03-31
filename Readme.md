@@ -18,8 +18,9 @@ yarn build
 ```
 
 ## feature
+- [ ] database migration
 - [x] restfull api
 - [ ] graphql
 - [x] jwt
-- [ ] WebSocket
+- [x] WebSocket
 
