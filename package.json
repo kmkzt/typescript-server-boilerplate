@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development nodemon",
-    "build": "tsc ./src/index.ts  --outDir ./dist"
+    "build": "rimraf dist && mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist"
   },
   "author": "kmkzt",
   "license": "MIT",
@@ -33,7 +33,9 @@
     "eslint": "5.15.3",
     "eslint-config-prettier": "4.1.0",
     "eslint-plugin-prettier": "3.0.1",
+    "mkdirp": "^0.5.1",
     "nodemon": "1.18.10",
+    "rimraf": "2.6.3",
     "ts-node": "8.0.3",
     "typescript": "3.3.4000"
   },
