@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>CHAT SAMPLE</title>
+  </head>
+  <body>
+    <div id="access"></div>
+    <div id="message"></div>
+    <form id="form">
+      <input id="userinput" placeholder="username" >
+      <button>submit</button>      
+    </form>
+    <button id="logout">logout</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script>
+      const access = document.getElementById('access')
+      const message = document.getElementById('message')
+      const form = document.getElementById('form')
+      const logout = document.getElementById('logout')
+      const setUser = (user) => localStorage.setItem('user', user)
+      const getUser = () => localStorage.getItem('user')
+      
+      const toggleForm = () => {
+        const input = document.querySelector('form > input')
+        if (!getUser()) {
+          input.setAttribute('id', 'userinput')
+          input.setAttribute('placeholder', 'username')
+        } else {
+          input.setAttribute('id', 'messageinput')
+          input.setAttribute('placeholder', 'message')
+        }
+      }
+      const socket = io('http://localhost:3000/chat');
+      const socketEmit = (action, data) => socket.emit(action, data)
+      const recieve = (el) => (info) => {
+        console.log(info)
+        const add = document.createElement('div')
+        add.innerHTML = JSON.stringify(info)
+        el.appendChild(add)
+      }
+      socket.on('access', recieve(access))
+      socket.on('message', recieve(message))
+      window.addEventListener('DOMContentLoaded', () => {
+        toggleForm()
+      })
+      form.addEventListener('submit', (e) => {
+        console.log(e)
+        e.preventDefault();
+        const userEle = document.getElementById('userinput')
+        if (userEle) {
+          setUser( userEle.value)
+          socketEmit('access', { access: userEle.value})
+          userEle.value = ''
+          toggleForm()
+          return
+        }
+        const messageEle = document.getElementById('messageinput') 
+        if (messageEle) {
+          socketEmit('message', { message: messageEle.value})
+          messageEle.value = ''
+        }
+      })
+      logout.addEventListener('click', () => {
+        localStorage.removeItem('user')
+        toggleForm()
+      })
+    </script>
+  </body>
+</html>

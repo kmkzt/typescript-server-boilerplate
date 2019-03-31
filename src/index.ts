@@ -1,3 +1,5 @@
+import * as http from 'http'
+import { join } from 'path'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import * as socket from 'socket.io'
@@ -5,7 +7,6 @@ import * as session from 'express-session'
 import { envload } from './utils/env'
 import api from './api'
 import auth, { secret } from './auth'
-import { join } from 'path'
 
 envload()
 // express
@@ -26,13 +27,29 @@ app.use(
     }
   })
 )
-
+// static path
+const root = join(__dirname, 'public')
 // routing
 app.use('/api', api)
 app.use('/auth', auth)
 
+// WebSocket
+app.use('/chat', express.static(join(root, 'chat')))
+const server = http.createServer(app)
+const io = socket(server)
+io.of('/chat').on('connection', socket => {
+  socket.on('message', data => {
+    console.log(data)
+    io.emit('message', data)
+  })
+  socket.on('access', data => {
+    console.log(data)
+    io.emit('access', data)
+  })
+})
+server.listen(3000)
+
 // fallback -> root
-const root = join(__dirname, 'public')
 app.use(
   '*',
   express.static(root, {
@@ -46,11 +63,5 @@ app.use(
     // }
   })
 )
-
-// WebSocket
-const server = require('http').createServer(app)
-const io = socket(server)
-io.on('connection', () => {})
-server.listen(3000)
 
 // app.listen(3000)
