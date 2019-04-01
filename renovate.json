@@ -1,0 +1,28 @@
+{
+  "extends": ["config:base"],
+  "timezone": "Asia/Tokyo",
+  "labels": ["renovate"],
+  "patch": { "automerge": true },
+  "minor": {
+    "automerge": true
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 3am on the first day of the month"]
+  },
+  "ignoreDeps": ["^@types/node"],
+  "packageRules": [
+    {
+      "groupName": "express package",
+      "packagePatterns": ["^express", "^@types/express"]
+    },
+    {
+      "groupName": "typescript library",
+      "packagePatterns": ["^tsconfig", "^ts-"]
+    },
+    {
+      "groupName": "eslint library",
+      "packagePatterns": ["^exlint"]
+    }
+  ]
+}

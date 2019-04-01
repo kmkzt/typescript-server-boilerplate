@@ -1,5 +1,7 @@
 ## Express api boilerplate
 
+express, postgresSQL, websocket
+
 ## get started
 
 ## start development
@@ -64,6 +66,7 @@ DATABASE-> CREATE TABLE IF NOT EXISTS ...
 
 - [ ] database migration
 - [x] restfull api
+- [ ] Unit Test
 - [ ] graphql
 - [x] jwt
 - [x] WebSocket
