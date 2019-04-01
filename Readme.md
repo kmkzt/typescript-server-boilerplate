@@ -20,7 +20,13 @@ yarn build
 
 ## deploy heroku
 
-``
+```
+heroku create
+// **** is heroku of git repository
+git add remote heroku ****
+git push heroku master
+```
+
 heroku docs
 https://devcenter.heroku.com/articles/git
 
