@@ -7,7 +7,7 @@ import * as bodyParser from 'body-parser'
 import * as socket from 'socket.io'
 import { envload } from './utils/env'
 import api from './api'
-import graphql from './graphql'
+// import graphql from './graphql'
 import auth, { secret } from './auth'
 
 envload()

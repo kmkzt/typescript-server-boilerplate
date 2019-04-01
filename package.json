@@ -5,10 +5,14 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development nodemon",
-    "build": "rimraf dist && mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist"
+    "build": "rimraf dist && mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist",
+    "heroku-postbuild": "mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist"
   },
   "author": "kmkzt",
   "license": "MIT",
+  "engines": {
+    "node": "10.3.0"
+  },
   "dependencies": {
     "ajv": "6.10.0",
     "apollo-server-express": "^2.4.8",
