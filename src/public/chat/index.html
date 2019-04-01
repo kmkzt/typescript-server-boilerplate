@@ -38,7 +38,7 @@
         const currentroom = document.getElementById('currentroom')
         currentroom.innerHTML = getRoom()
       }
-      const socket = io('http://localhost:5000/chat')
+      const socket = io('/chat')
       const socketEmit = (action, data) => socket.emit(action, data)
       const recieve = el => info => {
         console.log(info)
