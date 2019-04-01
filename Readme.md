@@ -4,10 +4,22 @@
 
 ## start development
 
-```
+```shell
 docker-compose up -d
-// [wip] need to create table
+
 yarn dev
+```
+
+# [wip] need to create table
+
+connect docker psqlDB
+
+```shell
+sqlbash container=CONTAINER_NAME
+
+or
+
+docker exec -it CONTAINER_NAME bash
 ```
 
 ## build production
@@ -29,6 +41,24 @@ git push heroku master
 
 heroku docs
 https://devcenter.heroku.com/articles/git
+
+**heroku command**
+
+```shell
+heroku log -t # logs
+heroku logs -p postgres -t # postgres logs
+heroku addons # addons info
+heroku pg:info # pgql info
+```
+
+connect database
+
+```shell
+heroku pg:psql # connect pgql
+
+# then
+DATABASE-> CREATE TABLE IF NOT EXISTS ...
+```
 
 ## feature
 
