@@ -8,9 +8,9 @@
     <h1>Message</h1>
     <div id="message"></div>
     <form id="form">
-      <input id="room" type="number" placeholder="room number" >
-      <input class="userinput" placeholder="username" >
-      <button>submit</button>      
+      <input id="room" type="number" placeholder="room number" />
+      <input class="userinput" placeholder="username" />
+      <button>submit</button>
     </form>
     <div id="currentroom"></div>
     <button id="logout">logout</button>
@@ -20,9 +20,9 @@
       const message = document.getElementById('message')
       const form = document.getElementById('form')
       const logout = document.getElementById('logout')
-      const setUser = (user) => localStorage.setItem('user', user)
+      const setUser = user => localStorage.setItem('user', user)
       const getUser = () => localStorage.getItem('user')
-      const setRoom = (room) => localStorage.setItem('room', room)
+      const setRoom = room => localStorage.setItem('room', room)
       const getRoom = () => localStorage.getItem('room')
       const getRandomRoom = () => Math.floor(Math.random() * Math.floor(100))
       // const getRandomRoom = () => 1
@@ -38,9 +38,9 @@
         const currentroom = document.getElementById('currentroom')
         currentroom.innerHTML = getRoom()
       }
-      const socket = io('http://localhost:3000/chat');
+      const socket = io('http://localhost:5000/chat')
       const socketEmit = (action, data) => socket.emit(action, data)
-      const recieve = (el) => (info) => {
+      const recieve = el => info => {
         console.log(info)
         const add = document.createElement('div')
         add.innerHTML = JSON.stringify(info)
@@ -51,28 +51,28 @@
       window.addEventListener('DOMContentLoaded', () => {
         checkStatus()
       })
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
+      form.addEventListener('submit', e => {
+        e.preventDefault()
         const userEle = document.getElementById('userinput')
         if (userEle) {
           const selectRoom = document.getElementById('room').value
-          const room =  selectRoom ? Number(selectRoom) : getRandomRoom()
+          const room = selectRoom ? Number(selectRoom) : getRandomRoom()
           setRoom(room)
           setUser(userEle.value)
-          socketEmit('access', { 
+          socketEmit('access', {
             room,
-            user: userEle.value 
+            user: userEle.value
           })
           userEle.value = ''
           checkStatus()
           return
         }
-        const messageEle = document.getElementById('messageinput') 
+        const messageEle = document.getElementById('messageinput')
         if (messageEle) {
-          socketEmit('message', { 
+          socketEmit('message', {
             room: getRoom(),
             user: getUser(),
-            message: messageEle.value 
+            message: messageEle.value
           })
           messageEle.value = ''
         }

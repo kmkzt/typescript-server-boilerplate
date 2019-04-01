@@ -13,6 +13,8 @@ import auth, { secret } from './auth'
 envload()
 // express
 const app = express()
+const port = process.env.PORT || 5000 // heroku
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
@@ -73,4 +75,4 @@ chat.on('connection', socket => {
     })
   })
 })
-server.listen(3000)
+server.listen(port)
