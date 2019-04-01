@@ -1,11 +1,13 @@
 import * as http from 'http'
 import { join } from 'path'
 import * as express from 'express'
+import * as session from 'express-session'
+
 import * as bodyParser from 'body-parser'
 import * as socket from 'socket.io'
-import * as session from 'express-session'
 import { envload } from './utils/env'
 import api from './api'
+import graphql from './graphql'
 import auth, { secret } from './auth'
 
 envload()
@@ -33,7 +35,7 @@ const root = join(__dirname, 'public')
 app.use('/api', api)
 app.use('/auth', auth)
 app.use('/chat', express.static(join(root, 'chat')))
-
+// app.use('/graphql', graphql)
 // fallback -> root
 app.use(
   '*',
