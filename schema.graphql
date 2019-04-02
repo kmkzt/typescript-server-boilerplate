@@ -1,0 +1,23 @@
+type User {
+  id: ID!
+  username: String!
+  color: String
+  profile: String
+  picture: String
+}
+
+type Query {
+  getUser(id: ID): User
+  getUsers: [User]
+}
+
+type Mutation {
+  addUser(user: User): User
+  updateUser(user: User): User
+  deleteUser(id: ID): ID
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

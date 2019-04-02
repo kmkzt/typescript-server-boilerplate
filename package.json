@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon",
     "build": "rimraf dist && mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist",
-    "heroku-postbuild": "mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist"
+    "heroku-postbuild": "mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist",
+    "graphql:codegen": "graphql-codegen --config codegen.yml"
   },
   "author": "kmkzt",
   "license": "MIT",
@@ -24,9 +25,17 @@
     "jsonwebtoken": "8.5.1",
     "mysql": "2.16.0",
     "pg-promise": "8.6.4",
+    "react-apollo": "2.5.3",
     "socket.io": "2.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.0.6",
+    "@graphql-codegen/introspection": "^1.0.6",
+    "@graphql-codegen/typescript": "1.0.6",
+    "@graphql-codegen/typescript-graphql-files-modules": "^1.0.6",
+    "@graphql-codegen/typescript-operations": "1.0.6",
+    "@graphql-codegen/typescript-react-apollo": "1.0.6",
+    "@graphql-codegen/typescript-resolvers": "1.0.6",
     "@types/ajv": "1.0.0",
     "@types/body-parser": "1.17.0",
     "@types/dotenv": "6.1.0",

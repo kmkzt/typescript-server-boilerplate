@@ -62,6 +62,14 @@ heroku pg:psql # connect pgql
 DATABASE-> CREATE TABLE IF NOT EXISTS ...
 ```
 
+## graphQL codegen
+
+https://graphql-code-generator.com/docs/getting-started/
+
+```
+yarn graphql-codgen init
+```
+
 ## feature
 
 - [ ] database migration
