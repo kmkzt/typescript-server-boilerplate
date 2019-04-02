@@ -1,4 +1,3 @@
-import * as express from 'express'
 import { ApolloServer, gql } from 'apollo-server-express'
 
 // docs
@@ -17,7 +16,7 @@ const resolvers = {
     hello: () => 'Hello world!'
   }
 }
-const server = new ApolloServer({ typeDefs, resolvers })
+const apolloServer = new ApolloServer({ typeDefs, resolvers })
 // server.applyMiddleware({ app: graphql })
 
-export default server
+export default apolloServer

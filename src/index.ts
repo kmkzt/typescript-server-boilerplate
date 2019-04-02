@@ -7,7 +7,7 @@ import * as bodyParser from 'body-parser'
 import * as socket from 'socket.io'
 import { envload } from './utils/env'
 import api from './api'
-// import graphql from './graphql'
+import apolloServer from './apollo'
 import auth, { secret } from './auth'
 
 envload()
@@ -53,8 +53,13 @@ app.use(
   })
 )
 
-// WebSocket
+apolloServer.applyMiddleware({ app })
+
+// setup server
 const server = http.createServer(app)
+server.listen(port)
+
+// WebSocket
 const io = socket(server)
 const chat = io.of('/chat')
 chat.on('connection', socket => {
@@ -75,4 +80,3 @@ chat.on('connection', socket => {
     })
   })
 })
-server.listen(port)
