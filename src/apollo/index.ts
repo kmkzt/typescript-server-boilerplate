@@ -16,7 +16,17 @@ const resolvers = {
     hello: () => 'Hello world!'
   }
 }
-const apolloServer = new ApolloServer({ typeDefs, resolvers })
-// server.applyMiddleware({ app: graphql })
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  // rootValue: (documentNode) => {
+  //   const op = getOperationAST(documentNode)
+  //   return op === 'mutation' ? mutationRoot : queryRoot;
+  // },
+  context: ctx => ({
+    // authScope: getScope(req.headers.authorization)  // authorization config
+  }),
+  playground: true
+})
 
 export default apolloServer

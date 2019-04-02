@@ -38,6 +38,11 @@ app.use('/api', api)
 app.use('/auth', auth)
 app.use('/chat', express.static(join(root, 'chat')))
 // app.use('/graphql', graphql)
+
+// apollo server
+apolloServer.applyMiddleware({ app, path: '/graphql' })
+// console.log(apolloServer.graphqlPath) confirmation graphqlPath
+
 // fallback -> root
 app.use(
   '*',
@@ -52,8 +57,6 @@ app.use(
     // }
   })
 )
-
-apolloServer.applyMiddleware({ app })
 
 // setup server
 const server = http.createServer(app)
