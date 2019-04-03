@@ -12,7 +12,7 @@
   "author": "kmkzt",
   "license": "MIT",
   "engines": {
-    "node": "10.3.0"
+    "node": "10.15.3"
   },
   "dependencies": {
     "ajv": "6.10.0",
