@@ -1,7 +1,7 @@
 // import fs from 'fs'
 import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
-import { query } from './utils/connect/pg'
+import { query } from './db/pgPromise'
 const auth = express.Router()
 
 // TODO
