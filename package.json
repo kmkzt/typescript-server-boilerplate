@@ -9,7 +9,12 @@
     "heroku-postbuild": "mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist",
     "graphql:codegen": "graphql-codegen --config codegen.yml",
     "typeorm": "ts-node -r ./tsconfig.json ./node_modules/typeorm/cli.js",
-    "typeorm:migrate": "NODE_ENV=development yarn typeorm migration:generate -n Initializ"
+    "typeorm:dev:run": "NODE_ENV=development yarn typeorm migration:run",
+    "typeorm:dev:migrate": "NODE_ENV=development yarn typeorm migration:generate -n ",
+    "typeorm:dev:revert": "NODE_ENV=development yarn typeorm migration:revert",
+    "typeorm:dev:sync": "NODE_ENV=development yarn typeorm schema:sync",
+    "typeorm:dev:drop": "NODE_ENV=development yarn typeorm schema:drop",
+    "typeorm:dev:cacheclear": "NODE_ENV=development yarn typeorm cache:clear"
   },
   "author": "kmkzt",
   "license": "MIT",
