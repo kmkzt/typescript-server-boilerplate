@@ -17,11 +17,11 @@ module.exports = {
   database,
   synchronize: isDevelop, // always database migrations
   logging: false,
-  entities: ['src/entities/**/*.ts'],
+  entities: ['src/entity/**/*.ts'],
   migrations: ['db/typeorm/migrations/**/*.ts'],
   subscribers: ['db/typeorm/subscribers/**/*.ts'],
   cli: {
-    entitiesDir: 'src/entities',
+    entitiesDir: 'src/entity',
     migrationsDir: 'db/typeorm/migrations',
     subscribersDir: 'db/typeorm/subscribers'
   }
