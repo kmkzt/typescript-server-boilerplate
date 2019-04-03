@@ -1,9 +1,14 @@
-import { createConnection, ConnectionOptions } from 'typeorm'
-import { Auth } from '../entities/auth'
-import { User } from '../entities/user'
+import {
+  createConnection,
+  ConnectionOptions,
+  Connection,
+  BaseEntity
+} from 'typeorm'
+import { Auth } from '../entity/auth'
+import { User } from '../entity/user'
 
 const isDev = process.env.NODE_ENV !== 'prodcution'
-const connectDatabase = async () => {
+export const connectDatabase = async () => {
   try {
     const user = process.env.POSTGRES_USER || 'user'
     const host = 'localhost'
@@ -20,7 +25,8 @@ const connectDatabase = async () => {
       logging: ['query', 'error'],
       synchronize: isDev
     }
-    return await createConnection(config)
+    const connect = await createConnection(config)
+    BaseEntity.useConnection(connect)
   } catch (err) {
     throw err
   }

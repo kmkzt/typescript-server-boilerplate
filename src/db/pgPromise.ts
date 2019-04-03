@@ -23,3 +23,31 @@ export const query = async (text: string, value?: any) => {
     throw err
   }
 }
+
+// example code ---
+//
+// const res = await query(
+//   'SELECT id FROM ${table:name} WHERE email=${email:csv} AND password=${password:csv}',
+//   { table: 'auth', email, password }
+// )
+//
+// :::
+//
+// await query(
+//   "INSERT INTO users (id, username, email) VALUES (3, 'dammyname', 'email@email')"
+// )
+//
+// :::
+//
+// const data = {
+//   id: Math.floor(Math.random() * 10000),
+//   email: 'aaa@aaa',
+//   password: 'aaa'
+// }
+// await query(
+//   'INSERT INTO ${table:name} (${data:name}) VALUES (${data:csv})',
+//   {
+//     table: 'auth',
+//     data
+//   }
+// )

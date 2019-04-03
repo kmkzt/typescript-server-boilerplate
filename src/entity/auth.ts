@@ -21,6 +21,6 @@ export class Auth extends BaseEntity {
   password!: string
 
   @OneToOne((type?: any) => User)
-  @JoinColumn()
-  info?: User
+  @JoinColumn({ name: 'user' })
+  user?: User
 }

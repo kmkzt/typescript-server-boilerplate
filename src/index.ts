@@ -9,11 +9,14 @@ import { envload } from './setup'
 import api from './api'
 import apolloServer from './apollo'
 import auth, { secret } from './auth'
+import { connectDatabase } from './db/typeorm'
 
 envload()
+connectDatabase()
 // express
 const app = express()
-const port = process.env.PORT || 5000 // heroku
+// heroku -> process.env.PORT
+const port = process.env.PORT || 5000
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())

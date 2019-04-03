@@ -1,7 +1,8 @@
 // import fs from 'fs'
 import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
-import { query } from './db/pgPromise'
+import { Auth } from './entity/auth'
+
 const auth = express.Router()
 
 // TODO
@@ -13,11 +14,11 @@ const authUser = async (
   password: string
 ): Promise<any | null> => {
   try {
-    const res = await query(
-      'SELECT id FROM ${table:name} WHERE email=${email:csv} AND password=${password:csv}',
-      { table: 'auth', email, password }
-    )
-    return res && res.length > 0 ? res[0] : null
+    const result = await Auth.find({
+      select: ['id', 'user'],
+      where: { email, password }
+    })
+    return result && result.length > 0 ? result[0] : null
   } catch (err) {
     throw err
   }
@@ -67,21 +68,22 @@ auth.get('/logout', (req, res) => {
 auth.post('/register', async (req, res, next) => {
   res.contentType('application/json')
   try {
-    const data = {
-      id: Math.floor(Math.random() * 10000),
-      ...req.body
-    }
-    // await query(
-    //   "INSERT INTO users (id, username, email) VALUES (3, 'dammyname', 'email@email')"
-    // )
-    await query(
-      'INSERT INTO ${table:name} (${data:name}) VALUES (${data:csv})',
-      {
-        table: 'auth',
-        data
+    const { email, password } = req.body
+    const duplicate = await Auth.find({
+      select: ['email'],
+      where: {
+        email
       }
-    )
-    res.send({ data })
+    })
+    if (duplicate.length > 0) {
+      res.send({ error: 'Duplicate email' })
+      return
+    }
+    const data = new Auth()
+    data.email = email
+    data.password = password
+    await Auth.save(data)
+    res.send(data)
   } catch (err) {
     res.send({ err })
   }
