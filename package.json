@@ -8,7 +8,8 @@
     "build": "rimraf dist && mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist",
     "heroku-postbuild": "mkdirp ./dist/public && cp -r ./src/public ./dist &&  tsc ./src/index.ts  --outDir ./dist",
     "graphql:codegen": "graphql-codegen --config codegen.yml",
-    "typeorm:migrate": "NODE_ENV=development typeorm migration:generate -n Initialize"
+    "typeorm": "ts-node -r ./tsconfig.json ./node_modules/typeorm/cli.js",
+    "typeorm:migrate": "NODE_ENV=development yarn typeorm migration:generate -n Initializ"
   },
   "author": "kmkzt",
   "license": "MIT",
