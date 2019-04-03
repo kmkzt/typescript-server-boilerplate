@@ -8,7 +8,7 @@ import {
 } from 'typeorm'
 import { User } from './user'
 
-@Entity()
+@Entity('auth')
 export class Auth extends BaseEntity {
   // @PrimaryGeneratedColumn('uuid')
   @PrimaryGeneratedColumn()
