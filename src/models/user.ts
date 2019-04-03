@@ -1,8 +1,6 @@
 import Ajv from 'ajv'
 
-const ajv = new Ajv({ removeAdditional: true })
-
-const schema = {
+const schema = new Ajv({ removeAdditional: true }).compile({
   $async: true,
   additionalProperties: false,
   properties: {
@@ -16,7 +14,6 @@ const schema = {
       type: 'string'
     }
   }
-}
+})
 
-const validate = ajv.compile(schema)
-export default validate
+export default schema
