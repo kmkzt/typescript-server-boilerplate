@@ -30,10 +30,10 @@
     "typeorm": "0.2.16"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.0.6",
-    "@graphql-codegen/introspection": "^1.0.6",
+    "@graphql-codegen/cli": "1.0.6",
+    "@graphql-codegen/introspection": "1.0.6",
     "@graphql-codegen/typescript": "1.0.6",
-    "@graphql-codegen/typescript-graphql-files-modules": "^1.0.6",
+    "@graphql-codegen/typescript-graphql-files-modules": "1.0.6",
     "@graphql-codegen/typescript-operations": "1.0.6",
     "@graphql-codegen/typescript-react-apollo": "1.0.6",
     "@graphql-codegen/typescript-resolvers": "1.0.6",
