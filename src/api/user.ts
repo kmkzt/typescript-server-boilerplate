@@ -1,6 +1,6 @@
 import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
-import { query } from '../utils/connect/pg'
+import { query } from '../db/pgPromise'
 import { secret, authRequired } from '../auth'
 const user = express.Router()
 

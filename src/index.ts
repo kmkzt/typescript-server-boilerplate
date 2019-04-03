@@ -5,7 +5,7 @@ import * as session from 'express-session'
 
 import * as bodyParser from 'body-parser'
 import * as socket from 'socket.io'
-import { envload } from './utils/env'
+import { envload } from './setup'
 import api from './api'
 import apolloServer from './apollo'
 import auth, { secret } from './auth'
