@@ -10,26 +10,11 @@ const auth = express.Router()
 // export const secret = fs.readFileSync('public.pem');
 export const secret = 'secret'
 
-const authUser = async (
-  email: string,
-  password: string
-): Promise<any | null> => {
-  try {
-    const result = await Auth.find({
-      select: ['id', 'user'],
-      where: { email, password }
-    })
-    return result && result.length > 0 ? result[0] : null
-  } catch (err) {
-    throw err
-  }
-}
-
 auth.post('/token', async (req, res) => {
   res.contentType('application/json')
   try {
     if (!req.session) {
-      res.send({ error: 'server error' })
+      res.send({ error: 'session error' })
       return
     }
 
@@ -38,17 +23,21 @@ auth.post('/token', async (req, res) => {
       res.send({ error: 'rquest errror' })
       return
     }
-    const userinfo = await authUser(email, password)
-    if (userinfo) {
-      const token = jwt.sign(userinfo, secret, { expiresIn: '25h' })
-      req.session.token = token
-      res.send({ token })
-    } else {
+    const userinfo = await Auth.findOne({
+      select: ['id', 'user'],
+      where: { email, password }
+    })
+    if (!userinfo) {
       req.session.token = null
       res.send({ error: 'Unable to authenticate!' })
+      return
     }
+    const token = jwt.sign({ id: userinfo.id }, secret, { expiresIn: '25h' })
+    console.log(token)
+    req.session.token = token
+    res.send({ token })
   } catch (err) {
-    res.send({ error: 'server error' })
+    res.send({ error: 'network error' })
   }
 })
 
@@ -70,21 +59,13 @@ auth.post('/register', async (req, res, next) => {
   res.contentType('application/json')
   try {
     const { email, password } = req.body
-    const duplicate = await Auth.find({
-      select: ['email'],
-      where: {
-        email
-      }
-    })
-    if (duplicate.length > 0) {
-      res.send({ error: 'Duplicate email' })
-      return
-    }
-    const user = new User()
     const data = new Auth()
     data.email = email
     data.password = password
-    data.user = user
+    await Auth.save(data)
+    const userinfo = new User()
+    await User.save(userinfo)
+    data.user = userinfo
     await Auth.save(data)
     res.send(data)
   } catch (err) {

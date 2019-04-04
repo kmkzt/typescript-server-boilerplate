@@ -2,32 +2,37 @@ import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
 import { query } from '../db/pgPromise'
 import { secret, authRequired } from '../auth'
+import { User } from '../entity/user'
+import { Auth } from '../entity/auth'
 const user = express.Router()
 
 user.get('/me', authRequired, async (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
   try {
-    const decode = jwt.verify((req.session as any).token, secret)
+    const decode = jwt.verify((req.session as any).token, secret) as any
     if (typeof decode === 'string') {
       res.json({
         message: 'server error.'
       })
       return
     }
-    const id = decode.hasOwnProperty('id') ? (decode as any).id : null
-    if (!id) {
+    console.log(decode)
+    if (!decode.id) {
       res.json({
-        message: 'not found user info'
+        message: 'not found user id'
       })
     }
-    const param = await query(
-      'SELECT * FROM ${table:name} WHERE id=${id} LIMIT 1',
-      { table: 'users', id }
-    )
-    if (param.length === 0) {
+
+    const param = await Auth.findOne({
+      relations: ['user'],
+      where: { id: decode.id }
+    })
+
+    if (!param) {
       res.send({
         message: 'not found user info'
       })
+      return
     }
     res.send(param)
   } catch (err) {
