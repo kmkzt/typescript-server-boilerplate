@@ -2,6 +2,7 @@
 import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
 import { Auth } from './entity/auth'
+import { User } from './entity/user'
 
 const auth = express.Router()
 
@@ -79,9 +80,11 @@ auth.post('/register', async (req, res, next) => {
       res.send({ error: 'Duplicate email' })
       return
     }
+    const user = new User()
     const data = new Auth()
     data.email = email
     data.password = password
+    data.user = user
     await Auth.save(data)
     res.send(data)
   } catch (err) {
