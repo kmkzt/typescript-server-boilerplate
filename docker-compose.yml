@@ -10,6 +10,7 @@ services:
   #     MYSQL_PASSWORD: pass
   #     MYSQL_DATABASE: database
   db:
+    contaitner_name: psqlDB
     image: postgres:9.6-alpine # docs https://hub.docker.com/_/postgres
     ports:
       - 5555:5432
@@ -17,6 +18,29 @@ services:
       - db:/var/lib/postgresql/data
       - ./db/postgres:/docker-entrypoint-initdb.d
     env_file: ./development.env
+  storage:
+    contaitner_name: S3Storage
+    image: minio/minio
+    ports:
+      - 9000:9000
+    volumes:
+      - ./storage/file:/export # storage
+      - ./storage/config:/root/.minio # config file
+    environment:
+      - MINIO_ACCESS_KEY=ACCESSKEY
+      - MINIO_SECRET_KEY=SECRETKEY
+    restart: always
+  # buckets:
+  #   image: minio/mc
+  #   depends_on:
+  #     - minio
+  #   entrypoint: >
+  #     /bin/sh -c `
+  #     until (/usr/bin/mc config host add myminio http://minio:9000 AKIA_MINIO_ACCESS_KEY minio_secret_key) do echo '...waiting...' && sleep 1; done;
+  #     /usr/bin/mc mb myminio/mybucket;
+  #     /usr/bin/mc policy download myminio/mybucket;
+  #     exit 0;
+  #     `
 volumes:
   db:
     external: false
