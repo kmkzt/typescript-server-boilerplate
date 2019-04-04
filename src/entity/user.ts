@@ -12,15 +12,15 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column()
-  username!: string
+  @Column({ nullable: true })
+  username?: string
 
-  @Column()
+  @Column({ nullable: true })
   color?: string
 
-  @Column()
+  @Column({ nullable: true })
   profile?: string
 
-  @Column()
+  @Column({ nullable: true })
   picture?: string
 }

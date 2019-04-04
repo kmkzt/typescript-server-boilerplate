@@ -4,7 +4,8 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   OneToOne,
-  JoinColumn
+  JoinColumn,
+  Index
 } from 'typeorm'
 import { User } from './user'
 
@@ -14,6 +15,7 @@ export class Auth extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number
 
+  @Index({ unique: true })
   @Column()
   email!: string
 
