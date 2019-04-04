@@ -29,13 +29,12 @@ auth.post('/token', async (req, res) => {
     })
     if (!userinfo) {
       req.session.token = null
-      res.send({ error: 'Unable to authenticate!' })
+      res.send(200).send({ error: 'Unable to authenticate!' })
       return
     }
     const token = jwt.sign({ id: userinfo.id }, secret, { expiresIn: '25h' })
-    console.log(token)
     req.session.token = token
-    res.send({ token })
+    res.status(200).send({ token })
   } catch (err) {
     res.send({ error: 'network error' })
   }
@@ -44,14 +43,14 @@ auth.post('/token', async (req, res) => {
 auth.get('/logout', (req, res) => {
   res.contentType('application/json')
   if (!req.session) {
-    res.send({ error: 'server error' })
+    res.status(500).send({ error: 'server error' })
     return
   }
   if (req.session.token) {
     req.session.token = null
-    res.send({ message: 'signout success.' })
+    res.status(200).send({ message: 'signout success.' })
   } else {
-    res.send({ message: 'not logged in' })
+    res.status(400).send({ message: 'not logged in' })
   }
 })
 
@@ -67,22 +66,22 @@ auth.post('/register', async (req, res, next) => {
     await User.save(userinfo)
     data.user = userinfo
     await Auth.save(data)
-    res.send(data)
+    res.status(200).send(data)
   } catch (err) {
-    res.send({ err })
+    res.status(400).send({ err })
   }
 })
 
 export const authRequired: express.RequestHandler = (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
   if (!req.session) {
-    res.json({
+    res.status(500).json({
       message: 'server error.'
     })
     return
   }
   if (!req.session.token) {
-    res.json({
+    res.status(400).json({
       message: 'required authentication.'
     })
     return

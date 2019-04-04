@@ -16,7 +16,6 @@ user.get('/me', authRequired, async (req, res, next) => {
       })
       return
     }
-    console.log(decode)
     if (!decode.id) {
       res.json({
         message: 'not found user id'
@@ -47,32 +46,39 @@ user.get('/users/:id', authRequired, async (req, res, next) => {
       where: { id: req.params.id }
     })
     if (!user) {
-      res.send({
-        message: 'no found user'
-      })
+      res.status(200).send(user)
       return
     }
-    res.send(user)
+    res.status(200).send({
+      message: 'no found user'
+    })
   } catch (err) {
-    res.send(err)
+    res.status(500).send(err)
   }
 })
 
 user.get('/users', authRequired, async (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
   try {
-    res.send(await User.find())
+    res.status(200).send(await User.find())
   } catch (err) {
-    res.send(err)
+    res.status(500).send(err)
   }
 })
 
 user.post('/users/:id', authRequired, async (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
   try {
+    const id = req.params.id
     const data = req.body
+    const user = await User.findOne({ id })
     if (!data || typeof data !== 'object') {
-      res.send({ message: 'request error' })
+      res.status(400).send({ message: 'request error' })
+      return
+    }
+    if (!user) {
+      res.status(400).send({ message: 'not found user' })
+      return
     }
     const updateKey: Array<keyof User> = [
       'username',
@@ -80,20 +86,21 @@ user.post('/users/:id', authRequired, async (req, res, next) => {
       'profile',
       'picture'
     ]
-    const user = new User()
-    updateKey.map((key: keyof User) => {
-      if (data.includes(key)) user[key] = data[key]
-    })
+    const updateData: Partial<User> = updateKey.reduce(
+      (upd: Partial<User>, key: keyof User) =>
+        data.includes(key)
+          ? {
+              [key]: data[key],
+              ...upd
+            }
+          : upd,
+      {}
+    )
 
-    const error = await validate(user)
-    if (error.length > 0) {
-      res.send(error)
-      return
-    }
-    User.save(user)
-    res.send(`success add: ${JSON.stringify(data)}`)
+    const updateRes = await User.update(user, updateData)
+    res.status(200).send(updateRes)
   } catch (err) {
-    res.send({ message: 'failed network error.' })
+    res.status(400).send({ message: err })
   }
 })
 export default user
