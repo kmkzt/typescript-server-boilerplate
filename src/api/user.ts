@@ -1,9 +1,9 @@
 import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
-import { query } from '../db/pgPromise'
 import { secret, authRequired } from '../auth'
 import { User } from '../entity/user'
 import { Auth } from '../entity/auth'
+import { validate } from 'class-validator'
 const user = express.Router()
 
 user.get('/me', authRequired, async (req, res, next) => {
@@ -39,32 +39,60 @@ user.get('/me', authRequired, async (req, res, next) => {
     res.send({ message: 'failed network error.' })
   }
 })
-user.get('/users', authRequired, async (req, res, next) => {
-  res.header('Content-Type', 'application/json; charset=utf-8')
-  const param = await query('SELECT * FROM ${table:name}', { table: 'users' })
-  res.send(param)
-})
 
-user.post('/users', authRequired, async (req, res, next) => {
+user.get('/users/:id', authRequired, async (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
   try {
-    const data = {
-      id: Math.floor(Math.random() * 10000),
-      ...req.body
+    const user = await User.findOne({
+      where: { id: req.params.id }
+    })
+    if (!user) {
+      res.send({
+        message: 'no found user'
+      })
+      return
     }
-    // await query(
-    //   "INSERT INTO users (id, username, email) VALUES (3, 'dammyname', 'email@email')"
-    // )
-    await query(
-      'INSERT INTO ${table:name} (${data:name}) VALUES (${data:csv})',
-      {
-        table: 'users',
-        data
-      }
-    )
+    res.send(user)
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+user.get('/users', authRequired, async (req, res, next) => {
+  res.header('Content-Type', 'application/json; charset=utf-8')
+  try {
+    res.send(await User.find())
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+user.post('/users/:id', authRequired, async (req, res, next) => {
+  res.header('Content-Type', 'application/json; charset=utf-8')
+  try {
+    const data = req.body
+    if (!data || typeof data !== 'object') {
+      res.send({ message: 'request error' })
+    }
+    const updateKey: Array<keyof User> = [
+      'username',
+      'color',
+      'profile',
+      'picture'
+    ]
+    const user = new User()
+    updateKey.map((key: keyof User) => {
+      if (data.includes(key)) user[key] = data[key]
+    })
+
+    const error = await validate(user)
+    if (error.length > 0) {
+      res.send(error)
+      return
+    }
+    User.save(user)
     res.send(`success add: ${JSON.stringify(data)}`)
   } catch (err) {
-    // console.log(err)
     res.send({ message: 'failed network error.' })
   }
 })

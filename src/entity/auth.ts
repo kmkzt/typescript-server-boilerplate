@@ -7,6 +7,7 @@ import {
   JoinColumn,
   Index
 } from 'typeorm'
+import { IsEmail } from 'class-validator'
 import { User } from './user'
 
 @Entity('auth')
@@ -15,8 +16,9 @@ export class Auth extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Index({ unique: true })
   @Column()
+  @IsEmail()
+  @Index({ unique: true })
   email!: string
 
   @Column()
