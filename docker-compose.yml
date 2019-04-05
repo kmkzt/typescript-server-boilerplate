@@ -18,6 +18,10 @@ services:
       - db:/var/lib/postgresql/data
       - ./db/postgres:/docker-entrypoint-initdb.d
     env_file: ./development.env
+    # env:
+    #   - POSTGRES_USER=user
+    #   - POSTGRES_PASSWORD=pass
+    #   - POSTGRES_DB=database
   # https://github.com/minio/minio
   # docs -> https://docs.minio.io/
   # DEFAULT_REGION: us-east-1

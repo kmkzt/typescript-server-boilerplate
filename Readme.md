@@ -1,8 +1,9 @@
-## Express api boilerplate
+# Express api boilerplate
 
-express, postgresSQL, websocket
+Typescript server application boilerplate.
+Express, PostgresSQL, Websocket
 
-## get started
+# get started
 
 ## start development
 
@@ -12,7 +13,7 @@ docker-compose up -d
 yarn dev
 ```
 
-# [wip] need to create table
+## [wip] need to create table
 
 connect docker psqlDB
 
@@ -70,11 +71,14 @@ https://graphql-code-generator.com/docs/getting-started/
 yarn graphql-codgen init
 ```
 
+development stated and open http://localhost:5000/graphql
+
 ## feature
 
 - [ ] database migration
 - [x] restfull api
 - [ ] Unit Test
 - [ ] graphql
+- [ ] File Upload (AWS S3)
 - [x] jwt
 - [x] WebSocket
