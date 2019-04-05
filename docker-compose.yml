@@ -10,7 +10,6 @@ services:
   #     MYSQL_PASSWORD: pass
   #     MYSQL_DATABASE: database
   db:
-    contaitner_name: psqlDB
     image: postgres:9.6-alpine # docs https://hub.docker.com/_/postgres
     ports:
       - 5555:5432
@@ -19,7 +18,6 @@ services:
       - ./db/postgres:/docker-entrypoint-initdb.d
     env_file: ./development.env
   storage:
-    contaitner_name: S3Storage
     image: minio/minio
     ports:
       - 9000:9000
