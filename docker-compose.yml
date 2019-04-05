@@ -1,5 +1,6 @@
 version: '3'
 services:
+  # mySQL
   # db:
   #   image: mysql:8.0.15
   #   ports:
@@ -17,6 +18,9 @@ services:
       - db:/var/lib/postgresql/data
       - ./db/postgres:/docker-entrypoint-initdb.d
     env_file: ./development.env
+  # https://github.com/minio/minio
+  # docs -> https://docs.minio.io/
+  # DEFAULT_REGION: us-east-1
   storage:
     image: minio/minio
     ports:
@@ -24,17 +28,22 @@ services:
     volumes:
       - ./storage/file:/export # storage
       - ./storage/config:/root/.minio # config file
+    command: server /data
     environment:
       - MINIO_ACCESS_KEY=ACCESSKEY
       - MINIO_SECRET_KEY=SECRETKEY
     restart: always
+  # TODO: Bucket container
+  # minio client https://github.com/minio/mc
+  # https://docs.minio.io/docs/minio-client-quickstart-guide.html
   # buckets:
   #   image: minio/mc
   #   depends_on:
-  #     - minio
+  #     - storage
+  #   # entry script. need to Match environmental variables.
   #   entrypoint: >
   #     /bin/sh -c `
-  #     until (/usr/bin/mc config host add myminio http://minio:9000 AKIA_MINIO_ACCESS_KEY minio_secret_key) do echo '...waiting...' && sleep 1; done;
+  #     until (/usr/bin/mc config host add myminio http://minio:9000 ACCESSKEY SECRETKEY) do echo '...waiting...' && sleep 1; done;
   #     /usr/bin/mc mb myminio/mybucket;
   #     /usr/bin/mc policy download myminio/mybucket;
   #     exit 0;
