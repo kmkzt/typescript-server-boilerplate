@@ -34,7 +34,7 @@
     "jsonwebtoken": "8.5.1",
     "mysql": "2.16.0",
     "pg-promise": "8.6.4",
-    "react-apollo": "2.5.3",
+    "react-apollo": "2.5.4",
     "s3": "4.4.0",
     "socket.io": "2.2.0",
     "typeorm": "0.2.16"
