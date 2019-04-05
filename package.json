@@ -24,6 +24,7 @@
   "dependencies": {
     "ajv": "6.10.0",
     "apollo-server-express": "2.4.8",
+    "aws-sdk": "2.436.0",
     "body-parser": "1.18.3",
     "class-validator": "0.9.1",
     "dotenv": "7.0.0",
@@ -34,6 +35,7 @@
     "mysql": "2.16.0",
     "pg-promise": "8.6.4",
     "react-apollo": "2.5.3",
+    "s3": "4.4.0",
     "socket.io": "2.2.0",
     "typeorm": "0.2.16"
   },
