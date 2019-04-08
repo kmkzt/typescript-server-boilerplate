@@ -1,6 +1,14 @@
+input UserInput {
+  id: ID!
+  username: String
+  color: String
+  profile: String
+  picture: String
+}
+
 type User {
   id: ID!
-  username: String!
+  username: String
   color: String
   profile: String
   picture: String
@@ -12,9 +20,9 @@ type Query {
 }
 
 type Mutation {
-  addUser(user: User): User
-  updateUser(user: User): User
-  deleteUser(id: ID): ID
+  addUser(user: UserInput): User!
+  updateUser(user: UserInput): User!
+  deleteUser(id: ID!): ID
 }
 
 schema {
