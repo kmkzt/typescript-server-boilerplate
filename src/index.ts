@@ -11,6 +11,7 @@ import apolloServer from './apollo'
 import auth, { secret } from './auth'
 import { connectDatabase } from './db/typeorm'
 
+//TODO: Fix Deprecation warning
 envload()
 connectDatabase()
 // express
