@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-  - ./schema.graphql
+  - ./src/graphql/schema.graphql
 documents: '**/*.graphql'
 generates:
   src/graphql/schema.ts:
@@ -14,7 +14,6 @@ generates:
       - 'typescript-operations'
       - 'typescript-resolvers'
       - 'typescript-react-apollo'
-
-  ./graphql.schema.json:
+  src/graphql/graphql.schema.json:
     plugins:
       - 'introspection'
