@@ -3,6 +3,7 @@ import { join } from 'path'
 import { ApolloServer, gql, IResolvers } from 'apollo-server-express'
 import { Resolvers, QueryResolvers, MutationResolvers } from '../graphql/schema'
 import { User } from '../entity/user'
+import { add as addUserQuery, update as updateUserQuery } from '../model/user'
 
 // docs
 // https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-express#express
@@ -38,27 +39,16 @@ const Query: QueryResolvers = {
 const Mutation: MutationResolvers = {
   async addUser(_parent, args, _context, _info) {
     try {
-      return {
-        id: '2',
-        username: 'bbb',
-        color: '#f00',
-        profile: 'dammy',
-        picture: 'http://sample-photo.com'
-      }
+      const result = await addUserQuery(args.user)
+      return result
     } catch (err) {
       throw err
     }
   },
   async updateUser(_parent, args, _context, _info) {
     try {
-      console.log(_parent, args, _context, _info)
-      return {
-        id: '2',
-        username: 'aaa',
-        color: '#f00',
-        profile: 'dammy aaa profile',
-        picture: 'http://sample-photo.com'
-      }
+      const updateResult = await updateUserQuery(args.user)
+      return updateResult
     } catch (err) {
       throw err
     }
