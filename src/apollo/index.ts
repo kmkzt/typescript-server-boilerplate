@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import { join } from 'path'
 import { ApolloServer, gql, IResolvers } from 'apollo-server-express'
 import { Resolvers, QueryResolvers, MutationResolvers } from '../graphql/schema'
+import { User } from '../entity/user'
 
 // docs
 // https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-express#express
@@ -15,37 +16,23 @@ const gqlSchema: string = fs
 const Query: QueryResolvers = {
   async getUser(_parent, args, _context, _info) {
     try {
-      console.log(_parent, args, _context, _info)
-      return {
-        id: '2',
-        username: 'bbb',
-        color: '#f00',
-        profile: 'dammy',
-        picture: 'http://sample-photo.com'
+      const user = await User.findOne({
+        where: {
+          id: args.id
+        }
+      })
+      if (!user) {
+        return null
       }
+      return user
     } catch (err) {
       throw err
     }
   },
   async getUsers(_parent, args, _context, _info) {
     try {
-      console.log(_parent, args, _context, _info)
-      return [
-        {
-          id: '2',
-          username: 'bbb',
-          color: '#f00',
-          profile: 'dammy',
-          picture: 'http://sample-photo.com'
-        },
-        {
-          id: '1',
-          username: 'aaa',
-          color: '#00f',
-          profile: 'dammy',
-          picture: 'http://sample-photo.com'
-        }
-      ]
+      const users = await User.find()
+      return users
     } catch (err) {
       throw err
     }
@@ -55,7 +42,6 @@ const Query: QueryResolvers = {
 const Mutation: MutationResolvers = {
   async addUser(_parent, args, _context, _info) {
     try {
-      console.log(_parent, args, _context, _info)
       return {
         id: '2',
         username: 'bbb',

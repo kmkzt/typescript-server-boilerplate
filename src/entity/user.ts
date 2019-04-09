@@ -10,7 +10,7 @@ import {
 export class User extends BaseEntity {
   // @PrimaryGeneratedColumn('uuid')
   @PrimaryGeneratedColumn()
-  id!: number
+  id!: string
 
   @Column({ nullable: true })
   username?: string
