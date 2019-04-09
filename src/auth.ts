@@ -3,6 +3,7 @@ import * as express from 'express'
 import * as jwt from 'jsonwebtoken'
 import { Auth } from './entity/auth'
 import { User } from './entity/user'
+import { hashed, encrypt } from './utils/crypto'
 
 const auth = express.Router()
 
@@ -25,7 +26,7 @@ auth.post('/token', async (req, res) => {
     }
     const userinfo = await Auth.findOne({
       select: ['id', 'user'],
-      where: { email, password }
+      where: { email: encrypt(email), password: hashed(password) }
     })
     if (!userinfo) {
       req.session.token = null
@@ -59,8 +60,8 @@ auth.post('/register', async (req, res, next) => {
   try {
     const { email, password } = req.body
     const data = new Auth()
-    data.email = email
-    data.password = password
+    data.email = encrypt(email)
+    data.password = hashed(password)
     await Auth.save(data)
     const userinfo = new User()
     await User.save(userinfo)
