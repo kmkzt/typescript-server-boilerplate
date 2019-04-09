@@ -16,11 +16,7 @@ const gqlSchema: string = fs
 const Query: QueryResolvers = {
   async getUser(_parent, args, _context, _info) {
     try {
-      const user = await User.findOne({
-        where: {
-          id: args.id
-        }
-      })
+      const user = await User.findOne({ id: args.id as string })
       if (!user) {
         return null
       }

@@ -4,6 +4,7 @@ import { secret, authRequired } from '../auth'
 import { User } from '../entity/user'
 import { Auth } from '../entity/auth'
 import { validate } from 'class-validator'
+import { update as updateUser } from '../model/user'
 const user = express.Router()
 
 user.get('/me', authRequired, async (req, res, next) => {
@@ -42,9 +43,7 @@ user.get('/me', authRequired, async (req, res, next) => {
 user.get('/users/:id', authRequired, async (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
   try {
-    const user = await User.findOne({
-      where: { id: req.params.id }
-    })
+    const user = await User.findOne({ id: req.params.id })
     if (!user) {
       res.status(200).send(user)
       return
@@ -69,36 +68,16 @@ user.get('/users', authRequired, async (req, res, next) => {
 user.post('/users/:id', authRequired, async (req, res, next) => {
   res.header('Content-Type', 'application/json; charset=utf-8')
   try {
-    const id = req.params.id
-    const data = req.body
-    const user = await User.findOne({ id })
-    if (!data || typeof data !== 'object') {
-      res.status(400).send({ message: 'request error' })
+    const userResult: string | User = await updateUser({
+      id: req.params.id,
+      ...req.body
+    })
+    if (typeof userResult === 'string') {
+      res.status(400).send({ message: userResult })
       return
     }
-    if (!user) {
-      res.status(400).send({ message: 'not found user' })
-      return
-    }
-    const updateKey: Array<keyof User> = [
-      'username',
-      'color',
-      'profile',
-      'picture'
-    ]
-    const updateData: Partial<User> = updateKey.reduce(
-      (upd: Partial<User>, key: keyof User) =>
-        data.includes(key)
-          ? {
-              [key]: data[key],
-              ...upd
-            }
-          : upd,
-      {}
-    )
 
-    const updateRes = await User.update(user, updateData)
-    res.status(200).send(updateRes)
+    res.status(200).send(userResult)
   } catch (err) {
     res.status(400).send({ message: err })
   }
