@@ -26,7 +26,7 @@ auth.post('/token', async (req, res) => {
     }
     const userinfo = await Auth.findOne({
       select: ['id', 'user'],
-      where: { email: encrypt(email), password: hashed(password) }
+      where: { email: hashed(email), password: encrypt(password) }
     })
     if (!userinfo) {
       req.session.token = null
@@ -60,8 +60,8 @@ auth.post('/register', async (req, res, next) => {
   try {
     const { email, password } = req.body
     const data = new Auth()
-    data.email = encrypt(email)
-    data.password = hashed(password)
+    data.email = hashed(email)
+    data.password = encrypt(password)
     await Auth.save(data)
     const userinfo = new User()
     await User.save(userinfo)
