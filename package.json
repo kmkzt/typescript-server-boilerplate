@@ -1,5 +1,5 @@
 {
-  "name": "express-api-boilerplate",
+  "name": "ts-server-boilerplate",
   "version": "1.0.0",
   "main": "index.js",
   "private": true,
