@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "ajv": "6.10.0",
-    "apollo-server-express": "2.4.8",
+    "apollo-server-express": "2.5.0",
     "aws-sdk": "2.437.0",
     "body-parser": "1.18.3",
     "class-validator": "0.9.1",
