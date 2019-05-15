@@ -1,4 +1,4 @@
-# Express api boilerplate
+# Typescript server boilerplate
 
 Typescript server application boilerplate.
 Express, PostgresSQL, Websocket
@@ -8,30 +8,22 @@ Express, PostgresSQL, Websocket
 ## start development
 
 ```shell
-docker-compose up -d
-
-yarn dev
+docker-compose up -d # DB contaner start
+yarn typeorm:dev:sync # DB init
+yarn && yarn dev # Start Express Server
 ```
 
-## [wip] need to create table
+## graphQL
 
-connect docker psqlDB
+change [schema](./src/graphql/schema.graphql) and [codegen.yml](./codegen.yml)
 
-```shell
-sqlbash container=CONTAINER_NAME
-
-or
-
-docker exec -it CONTAINER_NAME bash
-```
-
-## build production
-
-wip
+then, generate ts inteface.
 
 ```
-yarn build
+yarn graphql:codegen
 ```
+
+development stated and open http://localhost:5000/graphql
 
 ## deploy heroku
 
@@ -63,22 +55,17 @@ heroku pg:psql # connect pgql
 DATABASE-> CREATE TABLE IF NOT EXISTS ...
 ```
 
-## graphQL codegen
-
-https://graphql-code-generator.com/docs/getting-started/
-
-```
-yarn graphql-codgen init
-```
-
-development stated and open http://localhost:5000/graphql
-
 ## feature
 
-- [ ] database migration
+- [x] database migration
 - [x] restfull api
 - [ ] Unit Test
-- [ ] graphql
+- [x] graphql
 - [ ] File Upload (AWS S3)
 - [x] jwt
 - [x] WebSocket
+
+## Reffernce
+
+graphql-codegen
+https://graphql-code-generator.com/docs/getting-started/
