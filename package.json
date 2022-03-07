@@ -24,7 +24,7 @@
   "dependencies": {
     "ajv": "6.10.0",
     "apollo-server-express": "2.14.2",
-    "aws-sdk": "2.437.0",
+    "aws-sdk": "2.814.0",
     "body-parser": "1.19.0",
     "class-validator": "0.9.1",
     "dotenv": "8.0.0",
