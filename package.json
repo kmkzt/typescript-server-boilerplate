@@ -22,7 +22,7 @@
     "node": ">=10.3.0"
   },
   "dependencies": {
-    "ajv": "6.10.0",
+    "ajv": "6.12.3",
     "apollo-server-express": "2.14.2",
     "aws-sdk": "2.437.0",
     "body-parser": "1.19.0",
